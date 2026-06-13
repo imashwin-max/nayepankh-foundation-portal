@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NayePankh Foundation — AI-Powered NGO Portal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --sky: #0EA5E9;
+    --sky-dark: #0369A1;
+    --sky-light: #E0F2FE;
+    --wing: #F97316;
+    --wing-light: #FFF7ED;
+    --earth: #1C1917;
+    --stone: #78716C;
+    --parchment: #FAFAF9;
+    --white: #FFFFFF;
+    --success: #16A34A;
+    --border: #E7E5E4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--parchment);
+    color: var(--earth);
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--white);
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--sky-dark);
+  }
+  .nav-logo .wing-icon {
+    font-size: 1.6rem;
+  }
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+  }
+  .nav-tab {
+    padding: 6px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--stone);
+    transition: all 0.2s;
+  }
+  .nav-tab:hover { background: var(--sky-light); color: var(--sky-dark); }
+  .nav-tab.active {
+    background: var(--sky);
+    color: white;
+  }
+  .nav-badge {
+    background: var(--wing);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 20px;
+    margin-left: 4px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ── PAGES ── */
+  .page { display: none; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--sky-dark) 0%, var(--sky) 60%, #38BDF8 100%);
+    border-radius: 16px;
+    padding: 3rem 3rem 2.5rem;
+    color: white;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '🕊️';
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.15;
+  }
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 0.75rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .hero p {
+    font-size: 1rem;
+    opacity: 0.9;
+    max-width: 560px;
+    line-height: 1.6;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.25);
+    padding-top: 1.5rem;
+  }
+  .hero-stat { }
+  .hero-stat .num {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  .hero-stat .label {
+    font-size: 0.75rem;
+    opacity: 0.75;
+    margin-top: 2px;
+  }
+
+  /* ── CARDS GRID ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .card:hover {
+    box-shadow: 0 4px 20px rgba(14,165,233,0.12);
+    border-color: var(--sky);
+  }
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+  }
+  .card p {
+    font-size: 0.85rem;
+    color: var(--stone);
+    line-height: 1.5;
+  }
+  .card-action {
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    color: var(--sky-dark);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .card-action:hover { text-decoration: underline; }
+
+  /* ── CHATBOT ── */
+  .chatbot-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 1.5rem;
+    height: calc(100vh - 200px);
+  }
+  .chat-sidebar {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    overflow-y: auto;
+  }
+  .chat-sidebar h3 {
+    font-size: 0.75rem;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--stone);
+    margin-bottom: 1rem;
+  }
+  .quick-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 0.82rem;
+    color: var(--earth);
+    margin-bottom: 8px;
+    transition: all 0.15s;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.4;
+  }
+  .quick-btn:hover {
+    border-color: var(--sky);
+    background: var(--sky-light);
+    color: var(--sky-dark);
+  }
+  .quick-btn .qb-icon { font-size: 1.1rem; display: block; margin-bottom: 3px; }
+
+  .chat-main {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .chat-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .chat-avatar {
+    width: 38px;
+    height: 38px;
+    background: linear-gradient(135deg, var(--sky-dark), var(--sky));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+  .chat-header-info h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .chat-status {
+    font-size: 0.75rem;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .chat-status::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--success);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .msg {
+    display: flex;
+    gap: 8px;
+    max-width: 80%;
+  }
+  .msg.user {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+  .msg-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    align-self: flex-end;
+  }
+  .msg.bot .msg-avatar {
+    background: linear-gradient(135deg, var(--sky-dark), var(--sky));
+  }
+  .msg-bubble {
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+  .msg.bot .msg-bubble {
+    background: var(--sky-light);
+    color: var(--earth);
+    border-bottom-left-radius: 4px;
+  }
+  .msg.user .msg-bubble {
+    background: var(--sky);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+  .msg-time {
+    font-size: 0.7rem;
+    color: var(--stone);
+    margin-top: 4px;
+    font-family: 'Space Mono', monospace;
+  }
+  .typing-indicator {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--sky-light);
+    border-radius: 14px;
+    border-bottom-left-radius: 4px;
+    width: fit-content;
+  }
+  .dot {
+    width: 7px;
+    height: 7px;
+    background: var(--sky);
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-6px); }
+  }
+
+  .chat-input-area {
+    padding: 1rem 1.25rem;
+    border-top: 1.5px solid var(--border);
+    display: flex;
+    gap: 10px;
+  }
+  .chat-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    outline: none;
+    resize: none;
+    transition: border-color 0.2s;
+  }
+  .chat-input:focus { border-color: var(--sky); }
+  .send-btn {
+    padding: 10px 18px;
+    background: var(--sky);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+  }
+  .send-btn:hover { background: var(--sky-dark); }
+  .send-btn:disabled { background: var(--border); color: var(--stone); cursor: not-allowed; }
+
+  /* ── FORM ── */
+  .form-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 680px;
+  }
+  .form-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.4rem;
+  }
+  .form-card .subtitle {
+    font-size: 0.88rem;
+    color: var(--stone);
+    margin-bottom: 1.75rem;
+    line-height: 1.5;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 1rem;
+  }
+  label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--earth);
+  }
+  label span { color: var(--wing); }
+  input, select, textarea {
+    padding: 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    outline: none;
+    transition: border-color 0.2s;
+    color: var(--earth);
+    background: white;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--sky); }
+  textarea { resize: vertical; min-height: 80px; }
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--sky-dark), var(--sky));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: opacity 0.2s;
+    margin-top: 0.5rem;
+  }
+  .submit-btn:hover { opacity: 0.9; }
+  .success-banner {
+    display: none;
+    background: #DCFCE7;
+    border: 1.5px solid #86EFAC;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #15803D;
+    font-weight: 500;
+  }
+
+  /* ── IMPACT DASHBOARD ── */
+  .impact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.75rem;
+  }
+  .impact-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+  }
+  .impact-header p { font-size: 0.85rem; color: var(--stone); margin-top: 3px; }
+  .stat-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+  .stat-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--sky);
+  }
+  .stat-card.orange::after { background: var(--wing); }
+  .stat-card.green::after { background: var(--success); }
+  .stat-card.purple::after { background: #7C3AED; }
+  .stat-label {
+    font-size: 0.75rem;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--stone);
+    margin-bottom: 0.5rem;
+  }
+  .stat-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--earth);
+    line-height: 1;
+  }
+  .stat-change {
+    font-size: 0.75rem;
+    color: var(--success);
+    margin-top: 4px;
+  }
+  .charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+  .chart-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .chart-card h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--stone);
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; }
+  .bar-label { font-size: 0.78rem; width: 90px; color: var(--stone); text-align: right; }
+  .bar-track {
+    flex: 1;
+    height: 22px;
+    background: var(--sky-light);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sky-dark), var(--sky));
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 6px;
+    font-size: 0.7rem;
+    color: white;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    transition: width 1.5s ease;
+  }
+  .bar-fill.orange { background: linear-gradient(90deg, #EA580C, var(--wing)); }
+  .donut-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  canvas#donut { width: 120px !important; height: 120px !important; }
+  .legend { display: flex; flex-direction: column; gap: 8px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .recent-table {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .table-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .table-header h4 {
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    background: var(--parchment);
+    padding: 10px 1.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--stone);
+    font-weight: 400;
+  }
+  td {
+    padding: 12px 1.5rem;
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+  tr:hover td { background: var(--parchment); }
+  .badge {
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-family: 'Space Mono', monospace;
+  }
+  .badge.active { background: #DCFCE7; color: #15803D; }
+  .badge.pending { background: #FEF3C7; color: #B45309; }
+  .badge.complete { background: #EDE9FE; color: #6D28D9; }
+
+  /* ── DONATE ── */
+  .donate-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 1.5rem;
+  }
+  .donate-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+  }
+  .donate-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 0.4rem;
+  }
+  .donate-card .subtitle {
+    font-size: 0.88rem;
+    color: var(--stone);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  .amount-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+  .amount-btn {
+    padding: 14px 10px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--earth);
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .amount-btn small {
+    display: block;
+    font-size: 0.65rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    color: var(--stone);
+    margin-top: 2px;
+  }
+  .amount-btn:hover, .amount-btn.selected {
+    border-color: var(--sky);
+    background: var(--sky-light);
+    color: var(--sky-dark);
+  }
+  .impact-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .impact-item {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .impact-item .i-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+  }
+  .impact-item h4 { font-size: 0.95rem; margin-bottom: 2px; }
+  .impact-item p { font-size: 0.78rem; color: var(--stone); }
+  .donate-progress {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+  }
+  .progress-label strong { font-family: 'Space Mono', monospace; color: var(--sky-dark); }
+  .progress-bar {
+    height: 10px;
+    background: var(--sky-light);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 68%;
+    background: linear-gradient(90deg, var(--sky-dark), var(--sky));
+    border-radius: 10px;
+  }
+  .progress-note {
+    font-size: 0.75rem;
+    color: var(--stone);
+    margin-top: 6px;
+    text-align: center;
+  }
+
+  /* ── PAGE TITLE ── */
+  .page-title {
+    margin-bottom: 1.5rem;
+  }
+  .page-title .eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 4px;
+  }
+  .page-title h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+  }
+  .page-title p { font-size: 0.88rem; color: var(--stone); margin-top: 4px; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+  @media (max-width: 768px) {
+    .chatbot-layout { grid-template-columns: 1fr; }
+    .chat-sidebar { display: none; }
+    .stat-cards { grid-template-columns: 1fr 1fr; }
+    .charts-row { grid-template-columns: 1fr; }
+    .donate-layout { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 1.8rem; }
+    .hero-stats { gap: 1rem; }
+    .hero::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <span class="wing-icon">🕊️</span>
+    NayePankh Foundation
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('home')">Home</button>
+    <button class="nav-tab" onclick="showPage('chatbot')">AI Assistant <span class="nav-badge">AI</span></button>
+    <button class="nav-tab" onclick="showPage('intern')">Join Us</button>
+    <button class="nav-tab" onclick="showPage('impact')">Impact</button>
+    <button class="nav-tab" onclick="showPage('donate')">Donate</button>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-eyebrow">UP Govt. · 80G & 12A Registered NGO · Kanpur, India</div>
+    <h1>Giving Wings to<br>Those Who Need It Most</h1>
+    <p>NayePankh Foundation uplifts the underprivileged through food, education, hygiene, and community programs. One of India's largest student-led NGOs.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">2L+</div>
+        <div class="label">People Helped</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">30K+</div>
+        <div class="label">Trained Interns</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">12+</div>
+        <div class="label">Cities Active</div>
+      </div>
+      <div class="hero-stat">
+        <div class="num">4+</div>
+        <div class="label">Years of Impact</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <h3>AI Assistant</h3>
+      <p>Get instant answers about our programs, how to volunteer, internship opportunities, and donation details — powered by AI.</p>
+      <div class="card-action" onclick="showPage('chatbot')">Chat with Pankhi →</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🎓</div>
+      <h3>Intern with Us</h3>
+      <p>Gain real-world experience while making a difference. We've trained 30,000+ interns across various domains.</p>
+      <div class="card-action" onclick="showPage('intern')">Apply Now →</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <h3>Impact Dashboard</h3>
+      <p>Track real-time impact metrics — meals distributed, lives changed, cities reached, and donations raised.</p>
+      <div class="card-action" onclick="showPage('impact')">View Dashboard →</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🍽️</div>
+      <h3>Food Distribution</h3>
+      <p>We distribute free, nutritious meals to underprivileged families and stray animals across multiple cities every week.</p>
+      <div class="card-action" onclick="showPage('donate')">Support This →</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">📚</div>
+      <h3>Education Support</h3>
+      <p>Providing school uniforms, books, and mentorship to children who cannot afford basic educational resources.</p>
+      <div class="card-action" onclick="showPage('donate')">Sponsor a Child →</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🩺</div>
+      <h3>Hygiene & Health</h3>
+      <p>Distributing sanitary pads and running awareness campaigns about menstrual hygiene for women and girls.</p>
+      <div class="card-action" onclick="showPage('donate')">Contribute →</div>
+    </div>
+  </div>
+</div>
+
+<!-- CHATBOT -->
+<div class="page" id="page-chatbot">
+  <div class="page-title">
+    <div class="eyebrow">AI-Powered</div>
+    <h2>Meet Pankhi — Your NGO Guide</h2>
+    <p>Ask about volunteering, donations, internships, or our programs. Available 24/7.</p>
+  </div>
+  <div class="chatbot-layout">
+    <div class="chat-sidebar">
+      <h3>Quick Questions</h3>
+      <button class="quick-btn" onclick="sendQuick(this.dataset.q)" data-q="How can I volunteer with NayePankh Foundation?">
+        <span class="qb-icon">🤝</span>How can I volunteer?
+      </button>
+      <button class="quick-btn" onclick="sendQuick(this.dataset.q)" data-q="What internship opportunities are available at NayePankh Foundation?">
+        <span class="qb-icon">🎓</span>What internships do you offer?
+      </button>
+      <button class="quick-btn" onclick="sendQuick(this.dataset.q)" data-q="How does my donation help at NayePankh Foundation? What will it be used for?">
+        <span class="qb-icon">💙</span>How does my donation help?
+      </button>
+      <button class="quick-btn" onclick="sendQuick(this.dataset.q)" data-q="What programs does NayePankh Foundation run for underprivileged communities?">
+        <span class="qb-icon">🌟</span>What programs do you run?
+      </button>
+      <button class="quick-btn" onclick="sendQuick(this.dataset.q)" data-q="Is NayePankh Foundation government registered? What certifications do you have?">
+        <span class="qb-icon">📜</span>Is NayePankh government registered?
+      </button>
+      <button class="quick-btn" onclick="sendQuick(this.dataset.q)" data-q="How can I contact NayePankh Foundation? What is your address and phone number?">
+        <span class="qb-icon">📞</span>How can I contact you?
+      </button>
+      <button class="quick-btn" onclick="sendQuick(this.dataset.q)" data-q="What cities does NayePankh Foundation operate in?">
+        <span class="qb-icon">📍</span>Which cities are you in?
+      </button>
+    </div>
+
+    <div class="chat-main">
+      <div class="chat-header">
+        <div class="chat-avatar">🕊️</div>
+        <div class="chat-header-info">
+          <h4>Pankhi — NayePankh AI Assistant</h4>
+          <div class="chat-status">Online · Ready to help</div>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg bot">
+          <div class="msg-avatar">🕊️</div>
+          <div>
+            <div class="msg-bubble">
+              Namaste! 🙏 I'm <strong>Pankhi</strong>, the AI assistant for NayePankh Foundation.<br><br>
+              I can help you with information about our <strong>volunteering programs</strong>, <strong>internship opportunities</strong>, <strong>donation impact</strong>, and our <strong>community initiatives</strong> across India.<br><br>
+              What would you like to know?
+            </div>
+            <div class="msg-time">Just now</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <textarea class="chat-input" id="chatInput" placeholder="Ask about volunteering, internships, donations…" rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"
+          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send ↑</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INTERN REGISTRATION -->
+<div class="page" id="page-intern">
+  <div class="page-title">
+    <div class="eyebrow">Applications Open</div>
+    <h2>Join NayePankh as an Intern</h2>
+    <p>Build skills, earn certificates, and contribute to real social impact. Completely free to apply.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 320px;gap:1.5rem;align-items:start">
+    <div class="form-card">
+      <h2>Intern Application Form</h2>
+      <p class="subtitle">Fill out the form below and our team will reach out within 48 hours with next steps and your internship domain assignment.</p>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name <span>*</span></label>
+          <input type="text" placeholder="Priya" id="fname">
+        </div>
+        <div class="form-group">
+          <label>Last Name <span>*</span></label>
+          <input type="text" placeholder="Sharma" id="lname">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email Address <span>*</span></label>
+          <input type="email" placeholder="priya@email.com" id="email">
+        </div>
+        <div class="form-group">
+          <label>Phone Number <span>*</span></label>
+          <input type="tel" placeholder="+91 98765 43210" id="phone">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>City <span>*</span></label>
+          <input type="text" placeholder="Kanpur" id="city">
+        </div>
+        <div class="form-group">
+          <label>College / University</label>
+          <input type="text" placeholder="IIT Kanpur" id="college">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Preferred Domain <span>*</span></label>
+        <select id="domain">
+          <option value="">— Select your area of interest —</option>
+          <option>Social Media & Content</option>
+          <option>Event Management</option>
+          <option>Education & Mentorship</option>
+          <option>Fundraising & Outreach</option>
+          <option>Technology & Web</option>
+          <option>Graphic Design</option>
+          <option>Field Operations</option>
+          <option>Data & Research</option>
+          <option>Human Resources</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Availability</label>
+        <select id="availability">
+          <option>2–4 hours/week</option>
+          <option>4–8 hours/week</option>
+          <option>8–15 hours/week</option>
+          <option>Full-time (20+ hours/week)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Why do you want to intern with NayePankh?</label>
+        <textarea placeholder="Tell us about your motivation and how you'd like to contribute…" id="motivation"></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitForm()">Submit Application 🕊️</button>
+      <div class="success-banner" id="successBanner">
+        ✅ Application submitted successfully! Our team will contact you at your email within 48 hours with your internship assignment and onboarding details.
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      <div class="impact-item" style="flex-direction:column;align-items:flex-start;gap:0.75rem">
+        <div style="font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700">Why Intern With Us?</div>
+        <div style="font-size:0.84rem;color:var(--stone);line-height:1.6">
+          ✅ Official certificate on completion<br>
+          ✅ Letter of Recommendation<br>
+          ✅ Real community impact experience<br>
+          ✅ Network with 30,000+ alumni<br>
+          ✅ LinkedIn profile boost<br>
+          ✅ Flexible work hours<br>
+          ✅ 100% remote-friendly
+        </div>
+      </div>
+      <div class="impact-item">
+        <div class="i-icon">📍</div>
+        <div>
+          <h4>Active Cities</h4>
+          <p>Kanpur, Ghaziabad, Lucknow, Delhi & 8+ more cities across India</p>
+        </div>
+      </div>
+      <div class="impact-item">
+        <div class="i-icon">📞</div>
+        <div>
+          <h4>Questions?</h4>
+          <p>contact@nayepankh.com<br>+91 83185 00748</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- IMPACT DASHBOARD -->
+<div class="page" id="page-impact">
+  <div class="impact-header">
+    <div>
+      <div style="font-family:'Space Mono',monospace;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--sky);margin-bottom:4px">Live Data</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.9rem">Impact Dashboard</h2>
+      <p style="font-size:0.85rem;color:var(--stone);margin-top:3px">Real-time metrics from NayePankh Foundation's operations across India</p>
+    </div>
+    <div style="font-family:'Space Mono',monospace;font-size:0.78rem;color:var(--stone)">
+      Updated: June 2026
+    </div>
+  </div>
+
+  <div class="stat-cards">
+    <div class="stat-card">
+      <div class="stat-label">People Helped</div>
+      <div class="stat-num" id="cnt1">0</div>
+      <div class="stat-change">↑ 18% this quarter</div>
+    </div>
+    <div class="stat-card orange">
+      <div class="stat-label">Meals Distributed</div>
+      <div class="stat-num" id="cnt2">0</div>
+      <div class="stat-change">↑ 24% this quarter</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Interns Trained</div>
+      <div class="stat-num" id="cnt3">0</div>
+      <div class="stat-change">↑ 31% this quarter</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-label">Sanitary Pads Given</div>
+      <div class="stat-num" id="cnt4">0</div>
+      <div class="stat-change">↑ 12% this quarter</div>
+    </div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card">
+      <h4>Impact by Program</h4>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Food Aid</div>
+          <div class="bar-track"><div class="bar-fill" style="width:0%" data-w="88%">88%</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Education</div>
+          <div class="bar-track"><div class="bar-fill" style="width:0%" data-w="72%">72%</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Hygiene</div>
+          <div class="bar-track"><div class="bar-fill orange" style="width:0%" data-w="61%">61%</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Clothes</div>
+          <div class="bar-track"><div class="bar-fill orange" style="width:0%" data-w="45%">45%</div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Animal Care</div>
+          <div class="bar-track"><div class="bar-fill" style="width:0%" data-w="33%">33%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h4>Intern Domain Breakdown</h4>
+      <div class="donut-wrap">
+        <canvas id="donut" width="120" height="120"></canvas>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#0EA5E9"></div> Social Media (28%)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#F97316"></div> Event Mgmt (22%)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#16A34A"></div> Education (18%)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#7C3AED"></div> Tech & Web (15%)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#0369A1"></div> Others (17%)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent-table">
+    <div class="table-header">
+      <h4>Recent Intern Applications</h4>
+      <span style="font-size:0.78rem;color:var(--stone);font-family:'Space Mono',monospace">This Month</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Domain</th>
+          <th>City</th>
+          <th>Applied</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Aryan Verma</td><td>Social Media</td><td>Kanpur</td><td>Jun 12</td><td><span class="badge active">Active</span></td></tr>
+        <tr><td>Sneha Gupta</td><td>Education</td><td>Ghaziabad</td><td>Jun 11</td><td><span class="badge active">Active</span></td></tr>
+        <tr><td>Rahul Singh</td><td>Tech & Web</td><td>Lucknow</td><td>Jun 10</td><td><span class="badge pending">Pending</span></td></tr>
+        <tr><td>Meera Joshi</td><td>Event Mgmt</td><td>Delhi</td><td>Jun 09</td><td><span class="badge complete">Complete</span></td></tr>
+        <tr><td>Karan Patel</td><td>Fundraising</td><td>Kanpur</td><td>Jun 08</td><td><span class="badge active">Active</span></td></tr>
+        <tr><td>Pooja Sharma</td><td>Graphic Design</td><td>Agra</td><td>Jun 07</td><td><span class="badge pending">Pending</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- DONATE -->
+<div class="page" id="page-donate">
+  <div class="page-title">
+    <div class="eyebrow">Tax-Exempt Under 80G</div>
+    <h2>Support Our Mission</h2>
+    <p>Every rupee you give directly feeds, clothes, and educates those in need.</p>
+  </div>
+  <div class="donate-layout">
+    <div class="donate-card">
+      <h2>Make a Donation</h2>
+      <p class="subtitle">Your donations are 100% tax-exempt under Section 80G of the Indian Income Tax Act. We are transparent with every rupee spent.</p>
+      <div style="font-size:0.82rem;font-weight:600;margin-bottom:10px">Choose an Amount</div>
+      <div class="amount-grid">
+        <div class="amount-btn" onclick="selectAmount(this,'100')">₹100<small>1 meal for 2 people</small></div>
+        <div class="amount-btn" onclick="selectAmount(this,'250')">₹250<small>School supplies kit</small></div>
+        <div class="amount-btn selected" onclick="selectAmount(this,'500')">₹500<small>Monthly hygiene pack</small></div>
+        <div class="amount-btn" onclick="selectAmount(this,'1000')">₹1,000<small>Clothes for 3 families</small></div>
+        <div class="amount-btn" onclick="selectAmount(this,'2500')">₹2,500<small>Education for 1 child</small></div>
+        <div class="amount-btn" onclick="selectAmount(this,'5000')">₹5,000<small>Feed 50 people</small></div>
+      </div>
+      <div class="form-group">
+        <label>Or enter custom amount (₹)</label>
+        <input type="number" placeholder="Enter amount in ₹" id="customAmount" oninput="clearSelected()">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name <span>*</span></label>
+          <input type="text" placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label>Email <span>*</span></label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>PAN Number (for 80G certificate)</label>
+        <input type="text" placeholder="ABCDE1234F">
+      </div>
+      <div class="form-group">
+        <label>Dedicate this donation (optional)</label>
+        <input type="text" placeholder="In honour of… / In memory of…">
+      </div>
+      <button class="submit-btn" onclick="submitDonation()">Donate Securely via UPI / Card 💙</button>
+      <div class="success-banner" id="donateBanner">
+        💙 Thank you for your generous donation! You will receive a confirmation email with your 80G tax receipt within 24 hours.
+      </div>
+      <p style="font-size:0.75rem;color:var(--stone);margin-top:10px;text-align:center">
+        🔒 Secured by Razorpay · 100% Transparent · 80G Tax Exempt
+      </p>
+    </div>
+    <div class="impact-sidebar">
+      <div class="donate-progress">
+        <div class="progress-label">
+          <span>June 2026 Goal</span>
+          <strong>₹68,000 / ₹1,00,000</strong>
+        </div>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="progress-note">68 donors this month · 32% to go</div>
+      </div>
+      <div class="impact-item">
+        <div class="i-icon">🍽️</div>
+        <div><h4>₹100 = 2 Meals</h4><p>Nutritious food for underprivileged families & stray animals</p></div>
+      </div>
+      <div class="impact-item">
+        <div class="i-icon">📚</div>
+        <div><h4>₹250 = School Kit</h4><p>Books, pens, uniform for one underprivileged child</p></div>
+      </div>
+      <div class="impact-item">
+        <div class="i-icon">🩺</div>
+        <div><h4>₹500 = Hygiene Pack</h4><p>Monthly supply of sanitary pads + hygiene education</p></div>
+      </div>
+      <div class="impact-item">
+        <div class="i-icon">👗</div>
+        <div><h4>₹1,000 = Clothes</h4><p>Clothing for an entire family during winter drives</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── PAGE NAV ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  const map = {home:0,chatbot:1,intern:2,impact:3,donate:4};
+  tabs[map[id]].classList.add('active');
+  if (id === 'impact') initImpact();
+}
+
+// ── CHATBOT ──
+const SYSTEM_PROMPT = `You are Pankhi, the AI assistant for NayePankh Foundation, a UP Government registered NGO (80G & 12A certified) based in Kanpur, India.
+
+Key facts about NayePankh Foundation:
+- Founded during COVID-19, later expanded
+- One of India's largest student-led NGOs
+- Helps underprivileged people with food, clothes, sanitary pads, education
+- Has helped 2 lakh+ people, trained 30,000+ interns
+- Operations in Kanpur, Ghaziabad, Lucknow, Delhi and 10+ cities
+- Contact: contact@nayepankh.com, +91 83185 00748
+- Website: nayepankh.com
+- Founder: Prashant Shukla
+- Registered under Indian Society Act 1860, affiliated with NITI Aayog
+- Donations are 80G tax exempt
+
+Programs:
+1. Food distribution (meals to underprivileged & stray animals)
+2. Sanitary pad distribution & hygiene awareness
+3. Clothes distribution
+4. Education support (school uniforms, books)
+5. Internship program across 9+ domains
+
+Internship domains: Social Media & Content, Event Management, Education & Mentorship, Fundraising & Outreach, Technology & Web, Graphic Design, Field Operations, Data & Research, Human Resources.
+
+Always be warm, helpful, and speak with compassion. Use occasional Hindi words like Namaste, Ji, etc. Keep responses concise (under 150 words). Always encourage people to donate, volunteer, or intern. If unsure about specific details, direct them to contact@nayepankh.com.`;
+
+let chatHistory = [];
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  input.style.height = 'auto';
+  addMessage('user', msg);
+  chatHistory.push({role:'user', content: msg});
+  showTyping();
+  document.getElementById('sendBtn').disabled = true;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: chatHistory
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Sorry, I couldn\'t connect right now. Please email contact@nayepankh.com for help.';
+    removeTyping();
+    addMessage('bot', reply);
+    chatHistory.push({role:'assistant', content: reply});
+  } catch(e) {
+    removeTyping();
+    addMessage('bot', 'Apologies Ji, I\'m having trouble connecting right now. Please reach us at contact@nayepankh.com or call +91 83185 00748. 🙏');
+  }
+  document.getElementById('sendBtn').disabled = false;
+}
+
+function sendQuick(q) {
+  document.getElementById('chatInput').value = q;
+  sendMessage();
+}
+
+function addMessage(role, text) {
+  const messages = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  const now = new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'});
+  div.innerHTML = `
+    <div class="msg-avatar">${role==='bot'?'🕊️':'👤'}</div>
+    <div>
+      <div class="msg-bubble">${text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')}</div>
+      <div class="msg-time">${now}</div>
+    </div>`;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function showTyping() {
+  const messages = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.id = 'typing';
+  div.innerHTML = `<div class="msg-avatar">🕊️</div><div class="typing-indicator"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+function removeTyping() {
+  document.getElementById('typing')?.remove();
+}
+
+// ── INTERN FORM ──
+function submitForm() {
+  const fname = document.getElementById('fname').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const domain = document.getElementById('domain').value;
+  if (!fname || !email || !domain) {
+    alert('Please fill in all required fields (Name, Email, Domain).');
+    return;
+  }
+  document.getElementById('successBanner').style.display = 'block';
+  document.getElementById('successBanner').scrollIntoView({behavior:'smooth'});
+}
+
+// ── DONATE ──
+let selectedAmount = '500';
+function selectAmount(el, amt) {
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedAmount = amt;
+  document.getElementById('customAmount').value = '';
+}
+function clearSelected() {
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+}
+function submitDonation() {
+  const amt = document.getElementById('customAmount').value || selectedAmount;
+  document.getElementById('donateBanner').style.display = 'block';
+  document.getElementById('donateBanner').scrollIntoView({behavior:'smooth'});
+}
+
+// ── IMPACT COUNTERS & CHARTS ──
+let impactInited = false;
+function initImpact() {
+  if (impactInited) return;
+  impactInited = true;
+  animateCounter('cnt1', 200000, '2L+');
+  animateCounter('cnt2', 850000, '8.5L+');
+  animateCounter('cnt3', 30000, '30K+');
+  animateCounter('cnt4', 125000, '1.25L+');
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill').forEach(b => {
+      b.style.width = b.dataset.w;
+    });
+  }, 300);
+  drawDonut();
+}
+
+function animateCounter(id, target, label) {
+  const el = document.getElementById(id);
+  let start = 0;
+  const duration = 1800;
+  const step = target / (duration / 16);
+  const timer = setInterval(() => {
+    start = Math.min(start + step, target);
+    if (target >= 100000) el.textContent = (start/100000).toFixed(1) + 'L';
+    else if (target >= 1000) el.textContent = Math.round(start/1000) + 'K';
+    else el.textContent = Math.round(start);
+    if (start >= target) { el.textContent = label; clearInterval(timer); }
+  }, 16);
+}
+
+function drawDonut() {
+  const canvas = document.getElementById('donut');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const data = [28, 22, 18, 15, 17];
+  const colors = ['#0EA5E9','#F97316','#16A34A','#7C3AED','#0369A1'];
+  let angle = -Math.PI / 2;
+  const cx = 60, cy = 60, r = 45, inner = 26;
+  data.forEach((val, i) => {
+    const slice = (val / 100) * 2 * Math.PI;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, angle, angle + slice);
+    ctx.closePath();
+    ctx.fillStyle = colors[i];
+    ctx.fill();
+    angle += slice;
+  });
+  ctx.beginPath();
+  ctx.arc(cx, cy, inner, 0, 2 * Math.PI);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fill();
+  ctx.fillStyle = '#1C1917';
+  ctx.font = 'bold 11px Space Mono';
+  ctx.textAlign = 'center';
+  ctx.fillText('30K+', cx, cy - 4);
+  ctx.font = '9px Inter';
+  ctx.fillStyle = '#78716C';
+  ctx.fillText('Interns', cx, cy + 8);
+}
+</script>
+</body>
+</html>
